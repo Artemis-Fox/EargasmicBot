@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder } = require("discord.js")
 const { QueryType } = require("discord-player")
 
 module.exports = {
@@ -27,12 +27,12 @@ module.exports = {
 				)
 		),
 	run: async ({ client, interaction }) => {
-		if (!interaction.member.voice.channel) return interaction.editReply("You need to be in a VC to call me silly!")
+		if (!interaction.member.voice.channel) return interaction.editReply("Ya gotta be in a VC to call me!")
 
 		const queue = await client.player.createQueue(interaction.guild)
 		if (!queue.connection) await queue.connect(interaction.member.voice.channel)
 
-		let embed = new MessageEmbed()
+		let embed = new EmbedBuilder()
 
 		if (interaction.options.getSubcommand() === "song") {
             let url = interaction.options.getString("url")
@@ -41,8 +41,8 @@ module.exports = {
                 searchEngine: QueryType.YOUTUBE_VIDEO
             })
             if (result.tracks.length === 0)
-                return interaction.editReply("Sorry sweety I can't find it")
-
+                return interaction.editReply("Sorry sweety I cant find it")
+            
             const song = result.tracks[0]
             await queue.addTrack(song)
             embed
@@ -59,7 +59,7 @@ module.exports = {
 
             if (result.tracks.length === 0)
                 return interaction.editReply("No results")
-
+            
             const playlist = result.playlist
             await queue.addTracks(result.tracks)
             embed
@@ -73,8 +73,8 @@ module.exports = {
             })
 
             if (result.tracks.length === 0)
-                return interaction.editReply("No results")
-
+                return interaction.editReply("No luck suger")
+            
             const song = result.tracks[0]
             await queue.addTrack(song)
             embed
